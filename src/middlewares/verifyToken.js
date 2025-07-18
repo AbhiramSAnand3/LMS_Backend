@@ -5,27 +5,27 @@ const authenticateAdmin = async (req, res, next) => {
   try {
     // 1. Get token from Authorization header
     const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
         success: false,
-        message: "Authentication token required"
+        message: "Authentication token required",
       });
     }
 
     // 2. Extract token
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     // 3. Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // 4. Find admin and attach to request
-    const admin = await Admin.findById(decoded.id).select('-password');
-    
+    const admin = await Admin.findById(decoded.id).select("-password");
+
     if (!admin) {
       return res.status(401).json({
         success: false,
-        message: "Admin not found"
+        message: "Admin not found",
       });
     }
 
@@ -34,14 +34,14 @@ const authenticateAdmin = async (req, res, next) => {
   } catch (error) {
     console.error("Authentication error:", error);
     let message = "Invalid or expired token";
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       message = "Token expired";
-    } else if (error.name === 'JsonWebTokenError') {
+    } else if (error.name === "JsonWebTokenError") {
       message = "Invalid token";
     }
     return res.status(401).json({
       success: false,
-      message
+      message,
     });
   }
 };
@@ -51,7 +51,7 @@ const authorizeRoles = (...roles) => {
     if (!roles.includes(req.admin.role)) {
       return res.status(403).json({
         success: false,
-        message: "Unauthorized access"
+        message: "Unauthorized access",
       });
     }
     next();

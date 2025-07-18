@@ -1,8 +1,8 @@
 import express from "express";
-import { AdminLogin } from "./authController.js";
+import authorRoutes from "./author/authorRoutes.js";
 
 const router = express.Router();
 
-router.post("/login", AdminLogin);
+router.use("/author", authorRoutes);
 
 export default router;
