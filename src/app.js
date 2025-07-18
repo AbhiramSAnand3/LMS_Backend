@@ -4,7 +4,9 @@ import cors from "cors"
 import connectDB from "./config/db.js"
 import readersRoutes from "./modules/readers-module/readersRoutes.js"
 import booksRoutes from "./modules/books-module/booksRoutes.js"
-import adminRouter from "./modules/admin-module/adminRoutes.js"
+import createDefaultAdmin from "./modules/admin-module/adminController.js"
+import adminRoutes from "./modules/auth-module/authRoutes.js"
+import { startServer } from "./server.js"
 
 dotenv.config()
 
@@ -18,18 +20,15 @@ app.use(express.json())
 app.use(cors())
 
 // Routes
+app.use("/api/auth", adminRoutes)
 app.use("/api/readers", readersRoutes)
 app.use("/api/books", booksRoutes)
 
-// DB connection
-connectDB()
 
-// Server
-
-const startApp = () => {
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`)
-    })
+const startApp = async () => {
+    await startServer();
+    await connectDB();
+    await createDefaultAdmin();
 }
 
 startApp()
