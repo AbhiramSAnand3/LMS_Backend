@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const bookSchema = new mongoose.Schema({
   title: {
@@ -58,10 +59,22 @@ const bookSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  coverImage: {
-    type: String,
-    trim: true,
-  },
+  images: [
+    {
+      path: {
+        type: String,
+        trim: true,
+      },
+      isPrimary: {
+        type: Boolean,
+        default: false,
+      },
+      uploadedAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   totalCopies: {
     type: Number,
     required: true,
@@ -110,5 +123,6 @@ bookSchema.pre("save", function (next) {
   this.updatedAt = new Date();
   next();
 });
+bookSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("book", bookSchema);
+export default mongoose.model("book", bookSchema);
