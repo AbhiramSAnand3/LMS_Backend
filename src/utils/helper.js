@@ -50,3 +50,7 @@ export const deleteImagesFromCloudinary = async (images) => {
     }
   }
 };
+
+export const generateMemberShipId = () => {
+  return `MEM${Math.floor(1000 + Math.random() * 9000)}-${Date.now().toString().slice(-4)}`;
+};

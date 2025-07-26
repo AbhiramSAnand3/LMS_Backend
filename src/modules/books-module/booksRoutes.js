@@ -1,5 +1,11 @@
 import express from "express";
-import { createBook, getAllBooks, getBookById, updateBook, deleteBook } from "./booksController.js";
+import {
+  createBook,
+  getAllBooks,
+  getBookById,
+  updateBook,
+  deleteBook,
+} from "./booksController.js";
 import upload from "../../config/multer.js";
 
 const router = express.Router();

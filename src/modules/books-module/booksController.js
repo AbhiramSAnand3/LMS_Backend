@@ -4,7 +4,10 @@ import Genre from "../../model/lookups/genreModel.js";
 import Category from "../../model/lookups/categoryModel.js";
 import Publisher from "../../model/lookups/publisherModel.js";
 import _ from "mongoose-paginate-v2";
-import { deleteImagesFromCloudinary, uploadImagesToCloudinary } from "../../utils/helper.js";
+import {
+  deleteImagesFromCloudinary,
+  uploadImagesToCloudinary,
+} from "../../utils/helper.js";
 
 export const createBook = async (req, res) => {
   try {
@@ -280,15 +283,15 @@ export const updateBook = async (req, res) => {
     if (imagesToDelete) {
       const publicIdsToDelete = JSON.parse(imagesToDelete);
       const imagesToKeep = book.images.filter(
-        (img) => !publicIdsToDelete.includes(img.publicId)
+        (img) => !publicIdsToDelete.includes(img.publicId),
       );
-      
+
       // Delete images from Cloudinary
-      const imagesToRemove = book.images.filter(
-        (img) => publicIdsToDelete.includes(img.publicId)
+      const imagesToRemove = book.images.filter((img) =>
+        publicIdsToDelete.includes(img.publicId),
       );
       await deleteImagesFromCloudinary(imagesToRemove);
-      
+
       book.images = imagesToKeep;
     }
 
@@ -315,7 +318,8 @@ export const updateBook = async (req, res) => {
     book.availableCopies = availableCopies || book.availableCopies;
     book.shelfLocation = shelfLocation || book.shelfLocation;
     book.tags = tags || book.tags;
-    book.isReference = isReference !== undefined ? isReference : book.isReference;
+    book.isReference =
+      isReference !== undefined ? isReference : book.isReference;
 
     await book.save();
 
